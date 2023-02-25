@@ -1,5 +1,7 @@
 package com.mahi.javapassion.orderservice.command.api.aggregate;
 
+import com.mahi.javapassion.commonservice.command.CompleteOrderCommand;
+import com.mahi.javapassion.commonservice.event.OrderCompletedEvent;
 import com.mahi.javapassion.orderservice.command.api.command.CreateOrderCommand;
 import com.mahi.javapassion.orderservice.command.api.event.OrderCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
@@ -39,4 +41,18 @@ public class OrderAggregate {
         this.orderStatus = orderCreatedEvent.getOrderStatus();
    }
 
+    @CommandHandler
+    public OrderAggregate(CompleteOrderCommand completeOrderCommand) {
+        //Validate the Order
+        OrderCompletedEvent orderCompletedEvent = OrderCompletedEvent.builder()
+                .orderId(completeOrderCommand.getOrderId())
+                .orderStatus(completeOrderCommand.getOrderStatus())
+                .build();
+        AggregateLifecycle.apply(orderCompletedEvent);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderCompletedEvent orderCompletedEvent) {
+        this.orderStatus = orderCompletedEvent.getOrderStatus();
+    }
 }

@@ -1,15 +1,17 @@
 package com.mahi.javapassion.commonservice.command;
 
-import com.mahi.javapassion.commonservice.model.CardDetails;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @Builder
-public class ValidatePaymentCommand {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ShipOrderCommand {
     @TargetAggregateIdentifier
-    private String paymentId;
+    private String shipmentId;
     private String orderId;
-    private CardDetails cardDetails;
 }
